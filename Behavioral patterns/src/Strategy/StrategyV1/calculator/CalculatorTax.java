@@ -1,6 +1,6 @@
-package StrategyV1.calculator;
+package Strategy.StrategyV1.calculator;
 
-import StrategyV1.store.budget;
+import Strategy.StrategyV1.store.budget;
 
 import java.math.BigDecimal;
 

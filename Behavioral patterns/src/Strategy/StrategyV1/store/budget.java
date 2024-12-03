@@ -1,4 +1,4 @@
-package StrategyV1.store;
+package Strategy.StrategyV1.store;
 
 import java.math.BigDecimal;
 

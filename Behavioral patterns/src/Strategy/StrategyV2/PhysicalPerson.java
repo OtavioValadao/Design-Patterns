@@ -1,4 +1,4 @@
-package StrategyV2;
+package Strategy.StrategyV2;
 
 public class PhysicalPerson implements StrategyMembers {
 

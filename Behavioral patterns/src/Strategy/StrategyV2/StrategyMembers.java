@@ -1,4 +1,4 @@
-package StrategyV2;
+package Strategy.StrategyV2;
 
 public interface StrategyMembers {
 

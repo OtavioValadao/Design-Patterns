@@ -1,19 +1,18 @@
-import StrategyV1.calculator.CalculatorTax;
-import StrategyV1.calculator.ICMS;
-import StrategyV1.store.budget;
-import StrategyV2.AccountProvider;
-import StrategyV2.BusinessMember;
-import StrategyV2.PhysicalPerson;
-import StrategyV2.StrategyMembers;
+import Strategy.StrategyV1.calculator.CalculatorTax;
+import Strategy.StrategyV1.calculator.ICMS;
+import Strategy.StrategyV1.store.budget;
+import Strategy.StrategyV2.AccountProvider;
+import Strategy.StrategyV2.BusinessMember;
+import Strategy.StrategyV2.PhysicalPerson;
+import Strategy.StrategyV2.StrategyMembers;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
 
 public class Main {
     public static void main(String[] args) {
-        strategyV1(false);
+        strategyV1(true);
         strategyV2(true);
     }
 
