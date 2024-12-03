@@ -1,3 +1,5 @@
+package Strategy;
+
 import Strategy.StrategyV1.calculator.CalculatorTax;
 import Strategy.StrategyV1.calculator.ICMS;
 import Strategy.StrategyV1.store.budget;
@@ -9,8 +11,7 @@ import Strategy.StrategyV2.StrategyMembers;
 import java.math.BigDecimal;
 import java.util.Set;
 
-
-public class Main {
+public class MainStrategy {
     public static void main(String[] args) {
         strategyV1(true);
         strategyV2(true);
