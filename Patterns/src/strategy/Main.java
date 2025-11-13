@@ -1,19 +1,24 @@
 package strategy;
 
-import strategy.nopattern.ProcessadorPagamento;
+import strategy.nopattern.PaymentProcessor;
+import strategy.pattern.first_solution.PaymentType;
 
 public class Main {
 
     public static void main(String[] args) {
-        ProcessadorPagamento processador = new ProcessadorPagamento();
+        //noPattern();
+        firstPattern();
+    }
+
+    public static void noPattern(){
+        PaymentProcessor processador = new PaymentProcessor();
 
         System.out.println("TESTE 1:");
-        processador.processarPagamento("PIX", 100.0, "cliente@email.com");
+        processador.paymentProcessor("PIX", 100.0, "cliente@email.com");
+    }
 
-        System.out.println("\n\nTESTE 2:");
-        processador.processarPagamento("CARTAO_CREDITO", 250.0, "cliente@email.com");
-
-        System.out.println("\n\nTESTE 3:");
-        processador.processarPagamento("BOLETO", 500.0, "cliente@email.com");
+    public static void firstPattern(){
+        String paymentMethod = "CRIPTOMOEDA";
+        PaymentType.valueOf(paymentMethod).pay(100.00);
     }
 }
