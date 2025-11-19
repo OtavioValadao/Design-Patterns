@@ -1,5 +1,7 @@
 package br.com.bolsavalores.model;
 
+import br.com.bolsavalores.factorymethod.Acao;
+
 public class AcaoPosicao {
     private Acao acao;
     private int quantidade;

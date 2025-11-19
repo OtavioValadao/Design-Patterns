@@ -1,6 +1,5 @@
 package br.com.bolsavalores.service;
 
-import br.com.bolsavalores.model.Acao;
 import br.com.bolsavalores.model.Carteira;
 import br.com.bolsavalores.model.Usuario;
 import br.com.bolsavalores.util.FormatoUtil;

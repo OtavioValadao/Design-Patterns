@@ -1,6 +1,6 @@
 package br.com.bolsavalores.service;
 
-import br.com.bolsavalores.model.Acao;
+import br.com.bolsavalores.factorymethod.Acao;
 import br.com.bolsavalores.model.Carteira;
 import br.com.bolsavalores.model.Cotacao;
 import br.com.bolsavalores.model.Ordem;

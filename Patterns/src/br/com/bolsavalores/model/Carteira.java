@@ -1,5 +1,7 @@
 package br.com.bolsavalores.model;
 
+import br.com.bolsavalores.factorymethod.Acao;
+
 import java.util.ArrayList;
 import java.util.List;
 
