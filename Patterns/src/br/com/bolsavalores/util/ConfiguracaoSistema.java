@@ -1,0 +1,39 @@
+package br.com.bolsavalores.util;
+
+public class ConfiguracaoSistema {
+    private String fonteDadosPadrao;
+    private String moedaPadrao;
+    private boolean modoSimulacao;
+
+    public ConfiguracaoSistema() {
+        this.fonteDadosPadrao = "B3";
+        this.moedaPadrao = "BRL";
+        this.modoSimulacao = true;
+    }
+
+    public String getFonteDadosPadrao() {
+        return fonteDadosPadrao;
+    }
+
+    public void setFonteDadosPadrao(String fonteDadosPadrao) {
+        this.fonteDadosPadrao = fonteDadosPadrao;
+    }
+
+    public String getMoedaPadrao() {
+        return moedaPadrao;
+    }
+
+    public void setMoedaPadrao(String moedaPadrao) {
+        this.moedaPadrao = moedaPadrao;
+    }
+
+    public boolean isModoSimulacao() {
+        return modoSimulacao;
+    }
+
+    public void setModoSimulacao(boolean modoSimulacao) {
+        this.modoSimulacao = modoSimulacao;
+    }
+}
+
+
