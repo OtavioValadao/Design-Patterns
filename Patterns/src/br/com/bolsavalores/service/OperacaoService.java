@@ -1,6 +1,8 @@
 package br.com.bolsavalores.service;
 
 import br.com.bolsavalores.factorymethod.Acao;
+import br.com.bolsavalores.factorymethod.AcaoFactory;
+import br.com.bolsavalores.factorymethod.TipoDeAcao;
 import br.com.bolsavalores.model.Carteira;
 import br.com.bolsavalores.model.Cotacao;
 import br.com.bolsavalores.model.Ordem;
@@ -65,7 +67,8 @@ public class OperacaoService {
                 return;
             }
             carteira.setSaldoDisponivel(carteira.getSaldoDisponivel() - valorTotal);
-            Acao acao = new Acao(ordem.getCodigoAcao(), ordem.getTipoAcao(), ordem.getBolsa(), cotacaoEncontrada.getPreco());
+            AcaoFactory acaoFactory = new AcaoFactory();
+            Acao acao = acaoFactory.criar(TipoDeAcao.valueOf(ordem.getTipoAcao()), ordem.getCodigoAcao(), ordem.getBolsa(), cotacaoEncontrada.getPreco());
             carteira.adicionarOuAtualizarPosicao(acao, ordem.getQuantidade(), precoExecucao);
             if ("SIMPLIFICADO".equals(tipoRelatorio)) {
                 System.out.println("Compra realizada de " + ordem.getQuantidade() + " de " + ordem.getCodigoAcao() + " por " + FormatoUtil.formatarValor(precoExecucao, "MOEDA"));
@@ -85,7 +88,8 @@ public class OperacaoService {
                 precoExecucao = ordem.getPrecoLimite();
             }
             double valorTotal = precoExecucao * ordem.getQuantidade();
-            Acao acao = new Acao(ordem.getCodigoAcao(), ordem.getTipoAcao(), ordem.getBolsa(), cotacaoEncontrada.getPreco());
+            AcaoFactory acaoFactory = new AcaoFactory();
+            Acao acao = acaoFactory.criar(TipoDeAcao.valueOf(ordem.getTipoAcao()), ordem.getCodigoAcao(), ordem.getBolsa(), cotacaoEncontrada.getPreco());
             carteira.reduzirPosicao(acao, ordem.getQuantidade());
             carteira.setSaldoDisponivel(carteira.getSaldoDisponivel() + valorTotal);
             if ("SIMPLIFICADO".equals(tipoRelatorio)) {

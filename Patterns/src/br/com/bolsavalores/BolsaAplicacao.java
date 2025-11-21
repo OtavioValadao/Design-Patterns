@@ -1,5 +1,6 @@
 package br.com.bolsavalores;
 
+import br.com.bolsavalores.factorymethod.Acao;
 import br.com.bolsavalores.factorymethod.AcaoFactory;
 import br.com.bolsavalores.factorymethod.TipoDeAcao;
 import br.com.bolsavalores.model.Carteira;
@@ -34,13 +35,10 @@ public class BolsaAplicacao {
         Usuario usuario = MockDadosUtil.criarUsuarioPadrao(acoes);
 
         var acoesDuplicadas = new ArrayList<>();
-
         AcaoFactory acaoFactory = new AcaoFactory();
-
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "PETR4", "B3", 38.5));
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "VALE3","B3", 68.2));
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ETF,"ITUB4", "B3", 29.7));
-        acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.OUTRA,"ITUB4", "B3", 29.7));
 
         Carteira carteiraPrincipal = usuario.getCarteiras().get(0);
 
@@ -57,6 +55,7 @@ public class BolsaAplicacao {
 
         Cotacao cotacaoPetrNyse = cotacaoService.buscarCotacaoAtual("PETR4", "NYSE");
         Cotacao cotacaoValeExterna = cotacaoService.buscarCotacaoAtual("VALE3", configuracaoSegunda.getFonteDadosPadrao());
+        cotacoes.add(cotacaoValeExterna);
 
         Ordem ordemCompra = new Ordem();
         ordemCompra.setTipoOperacao("COMPRA");

@@ -4,13 +4,13 @@ public abstract class Acao {
 
     public String codigo;
     public String bolsa = "B3";
-    public Double preco;
+    public Double precoAtual;
 
 
-    public Acao(String codigo, String bolsa, Double preco) {
+    public Acao(String codigo, String bolsa, Double precoAtual) {
         this.codigo = codigo;
         this.bolsa = bolsa;
-        this.preco = preco;
+        this.precoAtual = precoAtual;
     }
 
     public String getCodigo() {
@@ -29,11 +29,11 @@ public abstract class Acao {
         this.bolsa = bolsa;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrecoAtual() {
+        return precoAtual;
     }
 
-    public void setPreco(Double preco) {
-        this.preco = preco;
+    public void setPrecoAtual(Double precoAtual) {
+        this.precoAtual = precoAtual;
     }
 }
