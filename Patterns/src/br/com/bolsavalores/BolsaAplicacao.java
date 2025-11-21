@@ -26,7 +26,6 @@ public class BolsaAplicacao {
 
     public void executarDemonstracao() {
 
-
         ConfiguracaoSistema configuracaoPrimeira = new ConfiguracaoSistema();
         ConfiguracaoSistema configuracaoSegunda = new ConfiguracaoSistema();
         configuracaoSegunda.setFonteDadosPadrao("EXTERNA");
@@ -34,13 +33,13 @@ public class BolsaAplicacao {
         List<Acao> acoes = MockDadosUtil.criarAcoesIniciais();
         Usuario usuario = MockDadosUtil.criarUsuarioPadrao(acoes);
 
-        var acoesDuplicadas = new ArrayList<>();
+        List<Acao> acoesDuplicadas = new ArrayList<>();
         AcaoFactory acaoFactory = new AcaoFactory();
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "PETR4", "B3", 38.5));
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "VALE3","B3", 68.2));
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ETF,"ITUB4", "B3", 29.7));
 
-        Carteira carteiraPrincipal = usuario.getCarteiras().get(0);
+        Carteira carteiraPrincipal = usuario.getCarteiras().getFirst();
 
         CotacaoService cotacaoService = new CotacaoService();
         OperacaoService operacaoService = new OperacaoService();
@@ -108,11 +107,12 @@ public class BolsaAplicacao {
         usuariosNotificacao.add(usuario);
 
         Acao acaoPetr = null;
-//        for (Acao acao : acoesDuplicadas) {
-//            if ("PETR4".equals(acao.getCodigo())) {
-//                acaoPetr = acao;
-//            }
-//        }
+        for (Acao acao : acoesDuplicadas) {
+            if ("PETR4".equals(acao.getCodigo())) {
+                acaoPetr = acao;
+            }
+        }
+
         if (acaoPetr != null) {
             double precoAnterior = cotacaoPetrNyse.getPreco();
             Cotacao novaCotacaoPetr = cotacaoService.buscarCotacaoAtual("PETR4", "B3");
