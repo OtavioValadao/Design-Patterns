@@ -10,8 +10,8 @@ import br.com.bolsavalores.model.Usuario;
 import br.com.bolsavalores.service.CotacaoService;
 import br.com.bolsavalores.service.NotificacaoService;
 import br.com.bolsavalores.service.OperacaoService;
+import br.com.bolsavalores.singleton.ConfiguracaoSistema;
 import br.com.bolsavalores.util.CalculoUtil;
-import br.com.bolsavalores.util.ConfiguracaoSistema;
 import br.com.bolsavalores.util.FormatoUtil;
 import br.com.bolsavalores.util.MockDadosUtil;
 
@@ -26,9 +26,8 @@ public class BolsaAplicacao {
 
     public void executarDemonstracao() {
 
-        ConfiguracaoSistema configuracaoPrimeira = new ConfiguracaoSistema();
-        ConfiguracaoSistema configuracaoSegunda = new ConfiguracaoSistema();
-        configuracaoSegunda.setFonteDadosPadrao("EXTERNA");
+        ConfiguracaoSistema config = ConfiguracaoSistema.getInstance();
+        config.setFonteDadosPadrao("EXTERNA");
 
         List<Acao> acoes = MockDadosUtil.criarAcoesIniciais();
         Usuario usuario = MockDadosUtil.criarUsuarioPadrao(acoes);
@@ -47,13 +46,13 @@ public class BolsaAplicacao {
 
         List<Cotacao> cotacoes = new ArrayList<>();
         for (Acao acao : acoes) {
-            Cotacao cotacao = cotacaoService.buscarCotacaoAtual(acao.getCodigo(), configuracaoPrimeira.getFonteDadosPadrao());
+            Cotacao cotacao = cotacaoService.buscarCotacaoAtual(acao.getCodigo(), config.getFonteDadosPadrao());
             acao.setPrecoAtual(cotacao.getPreco());
             cotacoes.add(cotacao);
         }
 
         Cotacao cotacaoPetrNyse = cotacaoService.buscarCotacaoAtual("PETR4", "NYSE");
-        Cotacao cotacaoValeExterna = cotacaoService.buscarCotacaoAtual("VALE3", configuracaoSegunda.getFonteDadosPadrao());
+        Cotacao cotacaoValeExterna = cotacaoService.buscarCotacaoAtual("VALE3", config.getFonteDadosPadrao());
         cotacoes.add(cotacaoValeExterna);
 
         Ordem ordemCompra = new Ordem();

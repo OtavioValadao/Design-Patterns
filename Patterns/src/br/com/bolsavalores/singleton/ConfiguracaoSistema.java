@@ -1,6 +1,9 @@
-package br.com.bolsavalores.util;
+package br.com.bolsavalores.singleton;
 
 public class ConfiguracaoSistema {
+
+    private static ConfiguracaoSistema instanciaUnica;
+
     private String fonteDadosPadrao;
     private String moedaPadrao;
     private boolean modoSimulacao;
@@ -9,6 +12,14 @@ public class ConfiguracaoSistema {
         this.fonteDadosPadrao = "B3";
         this.moedaPadrao = "BRL";
         this.modoSimulacao = true;
+    }
+
+    // 🔒 synchronized = apenas UMA thread por vez pode entrar aqui
+    public static synchronized ConfiguracaoSistema getInstance() {
+        if (instanciaUnica == null) {
+            instanciaUnica = new ConfiguracaoSistema();
+        }
+        return instanciaUnica;
     }
 
     public String getFonteDadosPadrao() {
@@ -35,5 +46,3 @@ public class ConfiguracaoSistema {
         this.modoSimulacao = modoSimulacao;
     }
 }
-
-
