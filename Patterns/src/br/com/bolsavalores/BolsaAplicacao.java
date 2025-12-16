@@ -6,6 +6,7 @@ import br.com.bolsavalores.factorymethod.TipoDeAcao;
 import br.com.bolsavalores.model.Carteira;
 import br.com.bolsavalores.model.Cotacao;
 import br.com.bolsavalores.model.Ordem;
+import br.com.bolsavalores.model.OrdemBuilder;
 import br.com.bolsavalores.model.Usuario;
 import br.com.bolsavalores.service.CotacaoService;
 import br.com.bolsavalores.service.NotificacaoService;
@@ -55,45 +56,49 @@ public class BolsaAplicacao {
         Cotacao cotacaoValeExterna = cotacaoService.buscarCotacaoAtual("VALE3", config.getFonteDadosPadrao());
         cotacoes.add(cotacaoValeExterna);
 
-        Ordem ordemCompra = new Ordem();
-        ordemCompra.setTipoOperacao("COMPRA");
-        ordemCompra.setTipoAcao("ORDINARIA");
-        ordemCompra.setCodigoAcao("BOVA11");
-        ordemCompra.setQuantidade(3);
-        ordemCompra.setPrecoLimite(115.0);
-        ordemCompra.setBolsa("B3");
-        ordemCompra.setOrigem("APP");
-        ordemCompra.setTipoExecucao("A_MERCADO");
-        ordemCompra.setValidade("DIA");
+        Ordem ordemCompra = new OrdemBuilder()
+                .paraCompra()
+                .comTipoAcao("ORDINARIA")
+                .comCodigo("BOVA11")
+                .comQuantidade(3)
+                .comPrecoLimite(115.0)
+                .naBolsa("B3")
+                .comOrigem("APP")
+                .comTipoExecucao("A_MERCADO")
+                .comValidade("DIA")
+                .build();
+
 
         double valorAntes = CalculoUtil.calcularValorTotalCarteira(carteiraPrincipal);
         System.out.println("Valor inicial da carteira " + FormatoUtil.formatarValor(valorAntes, "MOEDA"));
 
         operacaoService.executarOperacao(ordemCompra, carteiraPrincipal, cotacoes, "DETALHADO", "COMPLETA");
 
-        Ordem ordemVenda = new Ordem();
-        ordemVenda.setTipoOperacao("VENDA");
-        ordemVenda.setTipoAcao("ORDINARIA");
-        ordemVenda.setCodigoAcao("PETR4");
-        ordemVenda.setQuantidade(5);
-        ordemVenda.setPrecoLimite(0.0);
-        ordemVenda.setBolsa("B3");
-        ordemVenda.setOrigem("WEB");
-        ordemVenda.setTipoExecucao("A_MERCADO");
-        ordemVenda.setValidade("ATE_CANCELAR");
+        Ordem ordemVenda = new OrdemBuilder()
+                .paraVenda()
+                .comTipoAcao("ORDINARIA")
+                .comCodigo("PETR4")
+                .comQuantidade(5)
+                .comPrecoLimite(0.0)
+                .naBolsa("B3")
+                .comOrigem("WEB")
+                .comTipoExecucao("A_MERCADO")
+                .comValidade("ATE_CANCELAR")
+                .build();
 
         operacaoService.executarOperacao(ordemVenda, carteiraPrincipal, cotacoes, "SIMPLIFICADO", "SIMPLES");
 
-        Ordem ordemRelatorio = new Ordem();
+        Ordem ordemRelatorio = new OrdemBuilder()
+                .comTipoAcao("ORDINARIA")
+                .comCodigo("VALE3")
+                .comQuantidade(0)
+                .comPrecoLimite(0.0)
+                .naBolsa("B3")
+                .comOrigem("APP")
+                .comTipoExecucao("A_MERCADO")
+                .comValidade("DIA")
+                .build();
         ordemRelatorio.setTipoOperacao("RELATORIO");
-        ordemRelatorio.setTipoAcao("ORDINARIA");
-        ordemRelatorio.setCodigoAcao("VALE3");
-        ordemRelatorio.setQuantidade(0);
-        ordemRelatorio.setPrecoLimite(0.0);
-        ordemRelatorio.setBolsa("B3");
-        ordemRelatorio.setOrigem("APP");
-        ordemRelatorio.setTipoExecucao("A_MERCADO");
-        ordemRelatorio.setValidade("DIA");
 
         operacaoService.executarOperacao(ordemRelatorio, carteiraPrincipal, cotacoes, "DETALHADO", "COMPLETA");
 
@@ -127,5 +132,3 @@ public class BolsaAplicacao {
         }
     }
 }
-
-
