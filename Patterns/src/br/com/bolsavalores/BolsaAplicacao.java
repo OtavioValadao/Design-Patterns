@@ -72,7 +72,7 @@ public class BolsaAplicacao {
         double valorAntes = CalculoUtil.calcularValorTotalCarteira(carteiraPrincipal);
         System.out.println("Valor inicial da carteira " + FormatoUtil.formatarValor(valorAntes, "MOEDA"));
 
-        operacaoService.executarOperacao(ordemCompra, carteiraPrincipal, cotacoes, "DETALHADO", "COMPLETA");
+        operacaoService.executarOperacao(ordemCompra, carteiraPrincipal, cotacoes, "DETALHADO");
 
         Ordem ordemVenda = new OrdemBuilder()
                 .paraVenda()
@@ -86,7 +86,7 @@ public class BolsaAplicacao {
                 .comValidade("ATE_CANCELAR")
                 .build();
 
-        operacaoService.executarOperacao(ordemVenda, carteiraPrincipal, cotacoes, "SIMPLIFICADO", "SIMPLES");
+        operacaoService.executarOperacao(ordemVenda, carteiraPrincipal, cotacoes, "SIMPLIFICADO");
 
         Ordem ordemRelatorio = new OrdemBuilder()
                 .comTipoAcao("ORDINARIA")
@@ -100,7 +100,7 @@ public class BolsaAplicacao {
                 .build();
         ordemRelatorio.setTipoOperacao("RELATORIO");
 
-        operacaoService.executarOperacao(ordemRelatorio, carteiraPrincipal, cotacoes, "DETALHADO", "COMPLETA");
+        operacaoService.executarOperacao(ordemRelatorio, carteiraPrincipal, cotacoes, "DETALHADO");
 
         double valorApos = CalculoUtil.calcularValorTotalCarteira(carteiraPrincipal);
         double rentabilidade = CalculoUtil.calcularIndicadorCarteira(carteiraPrincipal, "RENTABILIDADE");
