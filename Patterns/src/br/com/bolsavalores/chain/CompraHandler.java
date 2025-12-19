@@ -6,6 +6,10 @@ import br.com.bolsavalores.factorymethod.TipoDeAcao;
 import br.com.bolsavalores.model.Carteira;
 import br.com.bolsavalores.model.Cotacao;
 import br.com.bolsavalores.model.Ordem;
+import br.com.bolsavalores.strategy.context.CalculoFactory;
+import br.com.bolsavalores.strategy.impl.ImpostoStrategy;
+import br.com.bolsavalores.strategy.impl.RentabilidadeStrategy;
+import br.com.bolsavalores.strategy.impl.RiscoStrategy;
 import br.com.bolsavalores.util.CalculoUtil;
 import br.com.bolsavalores.util.FormatoUtil;
 
@@ -46,7 +50,10 @@ public class CompraHandler extends AbstractOperacaoHandler {
                 System.out.println("Preco de execucao " + FormatoUtil.formatarValor(precoExecucao, "MOEDA"));
                 System.out.println("Valor total " + FormatoUtil.formatarValor(valorTotal, "MOEDA"));
                 System.out.println("Saldo restante " + FormatoUtil.formatarValor(carteira.getSaldoDisponivel(), "MOEDA"));
-                double indicador = CalculoUtil.calcularIndicadorCarteira(carteira, "RENTABILIDADE");
+
+                CalculoFactory calculoFactory = new CalculoFactory(List.of(new ImpostoStrategy(), new RentabilidadeStrategy(), new RiscoStrategy()));
+                var indicador = calculoFactory.calculoStrategyContext("RENTABILIDADE", carteira);
+                //double indicador = CalculoUtil.calcularIndicadorCarteira(carteira, "RENTABILIDADE");
                 System.out.println("Indicador de rentabilidade apos a operacao " + FormatoUtil.formatarValor(indicador, "PORCENTAGEM"));
             } else {
                 System.out.println("Compra executada");

@@ -12,6 +12,10 @@ import br.com.bolsavalores.service.CotacaoService;
 import br.com.bolsavalores.service.NotificacaoService;
 import br.com.bolsavalores.service.OperacaoService;
 import br.com.bolsavalores.singleton.ConfiguracaoSistema;
+import br.com.bolsavalores.strategy.context.CalculoFactory;
+import br.com.bolsavalores.strategy.impl.ImpostoStrategy;
+import br.com.bolsavalores.strategy.impl.RentabilidadeStrategy;
+import br.com.bolsavalores.strategy.impl.RiscoStrategy;
 import br.com.bolsavalores.util.CalculoUtil;
 import br.com.bolsavalores.util.FormatoUtil;
 import br.com.bolsavalores.util.MockDadosUtil;
@@ -36,8 +40,8 @@ public class BolsaAplicacao {
         List<Acao> acoesDuplicadas = new ArrayList<>();
         AcaoFactory acaoFactory = new AcaoFactory();
         acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "PETR4", "B3", 38.5));
-        acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "VALE3","B3", 68.2));
-        acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ETF,"ITUB4", "B3", 29.7));
+        acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ORDINARIA, "VALE3", "B3", 68.2));
+        acoesDuplicadas.add(acaoFactory.criar(TipoDeAcao.ETF, "ITUB4", "B3", 29.7));
 
         Carteira carteiraPrincipal = usuario.getCarteiras().getFirst();
 
@@ -103,7 +107,9 @@ public class BolsaAplicacao {
         operacaoService.executarOperacao(ordemRelatorio, carteiraPrincipal, cotacoes, "DETALHADO");
 
         double valorApos = CalculoUtil.calcularValorTotalCarteira(carteiraPrincipal);
-        double rentabilidade = CalculoUtil.calcularIndicadorCarteira(carteiraPrincipal, "RENTABILIDADE");
+        CalculoFactory calculoFactory = new CalculoFactory(List.of(new ImpostoStrategy(), new RentabilidadeStrategy(), new RiscoStrategy()));
+        var rentabilidade = calculoFactory.calculoStrategyContext("RENTABILIDADE", carteiraPrincipal);
+//        double rentabilidade = CalculoUtil.calcularIndicadorCarteira(carteiraPrincipal, "RENTABILIDADE");
         System.out.println("Valor final da carteira " + FormatoUtil.formatarValor(valorApos, "MOEDA"));
         System.out.println("Rentabilidade estimada " + FormatoUtil.formatarValor(rentabilidade, "PORCENTAGEM"));
 
