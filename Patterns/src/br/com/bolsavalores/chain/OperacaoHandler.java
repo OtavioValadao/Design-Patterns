@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface OperacaoHandler {
     void setNext(OperacaoHandler next);
-    void handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio);
+    boolean handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio);
 }

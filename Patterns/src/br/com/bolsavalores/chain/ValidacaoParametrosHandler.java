@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ValidacaoParametrosHandler extends AbstractOperacaoHandler {
     @Override
-    public void handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
+    public boolean handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
         boolean dadosInvalidos = false;
 
         // Regra 1: Quantidade deve ser positiva (exceto para relatórios que podem ter qtd 0)
@@ -25,10 +25,10 @@ public class ValidacaoParametrosHandler extends AbstractOperacaoHandler {
 
         if (dadosInvalidos) {
             // Interrompe a cadeia aqui. Não chama o next.
-            return;
+            return false;
         }
 
         // Se passou, segue para a próxima verificação
-        callNext(ordem, carteira, cotacoes, tipoRelatorio);
+        return callNext(ordem, carteira, cotacoes, tipoRelatorio);
     }
 }

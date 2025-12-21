@@ -16,7 +16,7 @@ public class ValidacaoRegrasHandler extends AbstractOperacaoHandler {
     private static final List<String> TIPOS_ACAO_VALIDOS = Arrays.asList("ORDINARIA", "PREFERENCIAL", "ETF");
 
     @Override
-    public void handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
+    public boolean handle(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
         boolean regrasInvalidas = false;
 
         // Regra 3: Tipo de operação deve ser um dos conhecidos
@@ -33,10 +33,10 @@ public class ValidacaoRegrasHandler extends AbstractOperacaoHandler {
 
         if (regrasInvalidas) {
             // Interrompe a cadeia aqui.
-            return;
+            return false;
         }
 
         // Se passou, segue para a execução da operação
-        callNext(ordem, carteira, cotacoes, tipoRelatorio);
+        return callNext(ordem, carteira, cotacoes, tipoRelatorio);
     }
 }
