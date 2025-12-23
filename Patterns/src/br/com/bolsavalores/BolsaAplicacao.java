@@ -1,5 +1,6 @@
 package br.com.bolsavalores;
 
+import br.com.bolsavalores.facade.BolsaFacade;
 import br.com.bolsavalores.model.Ordem;
 import br.com.bolsavalores.model.OrdemBuilder;
 

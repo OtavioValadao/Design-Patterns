@@ -14,9 +14,10 @@ public abstract class AbstractOperacaoHandler implements OperacaoHandler {
         this.next = next;
     }
 
-    protected void callNext(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
+    protected boolean callNext(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
         if (next != null) {
-            next.handle(ordem, carteira, cotacoes, tipoRelatorio);
+            return next.handle(ordem, carteira, cotacoes, tipoRelatorio);
         }
+        return true;
     }
 }

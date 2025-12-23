@@ -1,4 +1,4 @@
-package br.com.bolsavalores;
+package br.com.bolsavalores.facade;
 
 import br.com.bolsavalores.factorymethod.Acao;
 import br.com.bolsavalores.model.AcaoPosicao;

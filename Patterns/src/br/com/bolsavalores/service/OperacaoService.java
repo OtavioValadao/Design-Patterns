@@ -16,26 +16,26 @@ public class OperacaoService {
     private final OperacaoHandler chain;
 
     public OperacaoService() {
-        // 1. Primeiro, a validação de parâmetros (rápida)
+        // Monta a cadeia completa: Validações -> Compra -> Venda -> Relatório
         this.chain = new ValidacaoParametrosHandler();
-        
-        // 2. Depois, a validação de regras de negócio (mais lenta)
+
         OperacaoHandler validacaoRegras = new ValidacaoRegrasHandler();
         chain.setNext(validacaoRegras);
 
-        // 3. Se tudo estiver válido, seguem os handlers de execução
         OperacaoHandler compraHandler = new CompraHandler();
         validacaoRegras.setNext(compraHandler);
-        
+
         OperacaoHandler vendaHandler = new VendaHandler();
         compraHandler.setNext(vendaHandler);
-        
+
         OperacaoHandler relatorioHandler = new RelatorioHandler();
         vendaHandler.setNext(relatorioHandler);
     }
 
     public void executarOperacao(Ordem ordem, Carteira carteira, List<Cotacao> cotacoes, String tipoRelatorio) {
         System.out.println("\n--- Processando Ordem: " + ordem.getTipoOperacao() + " de " + ordem.getCodigoAcao() + " ---");
+        
+        // A cadeia agora cuida de tudo: validação e roteamento para o Template Method correto
         chain.handle(ordem, carteira, cotacoes, tipoRelatorio);
     }
 }
