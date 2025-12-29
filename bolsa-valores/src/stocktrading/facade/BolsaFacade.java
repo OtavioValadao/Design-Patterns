@@ -1,5 +1,7 @@
 package stocktrading.facade;
 
+import stocktrading.adapter.CotacaoCliente;
+import stocktrading.adapter.CotacaoClienteFactory;
 import stocktrading.factorymethod.Acao;
 import stocktrading.model.AcaoPosicao;
 import stocktrading.model.Carteira;
@@ -31,7 +33,11 @@ public class BolsaFacade {
     private final List<Acao> acoesDisponiveis;
 
     public BolsaFacade() {
-        this.cotacaoService = new CotacaoService();
+        // Cria o adaptador apropriado baseado na configuração do sistema
+        CotacaoCliente cotacaoCliente = CotacaoClienteFactory.criar(
+            ConfiguracaoSistema.getInstance().getFonteDadosPadrao()
+        );
+        this.cotacaoService = new CotacaoService(cotacaoCliente);
         this.operacaoService = new OperacaoService();
         this.notificacaoService = new NotificacaoService();
         this.calculoFactory = new CalculoFactory(List.of(
