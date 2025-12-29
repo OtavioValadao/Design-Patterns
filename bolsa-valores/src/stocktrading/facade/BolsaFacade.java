@@ -114,4 +114,13 @@ public class BolsaFacade {
         Double imposto = calculoFactory.calculoStrategyContext("IMPOSTO", carteira);
         System.out.println("Imposto estimado a pagar: " + FormatoUtil.formatarValor(imposto, "MOEDA"));
     }
+
+    // Métodos públicos para uso pelos Commands
+    public Carteira getCarteiraPadrao() {
+        return usuarioLogado.getCarteiras().get(0);
+    }
+
+    public Cotacao buscarCotacao(String codigoAcao) {
+        return cotacaoService.buscarCotacaoAtual(codigoAcao, configuracaoSistema.getFonteDadosPadrao());
+    }
 }
