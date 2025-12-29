@@ -2,6 +2,8 @@ package stocktrading.facade;
 
 import stocktrading.adapter.CotacaoCliente;
 import stocktrading.adapter.CotacaoClienteFactory;
+import stocktrading.decorator.Relatorio;
+import stocktrading.decorator.RelatorioFactory;
 import stocktrading.factorymethod.Acao;
 import stocktrading.model.AcaoPosicao;
 import stocktrading.model.Carteira;
@@ -114,11 +116,78 @@ public class BolsaFacade {
     }
 
     public void gerarRelatorioCarteira() {
-        System.out.println("Gerando relatório consolidado...");
-        Carteira carteira = usuarioLogado.getCarteiras().get(0);
-        
-        Double imposto = calculoFactory.calculoStrategyContext("IMPOSTO", carteira);
-        System.out.println("Imposto estimado a pagar: " + FormatoUtil.formatarValor(imposto, "MOEDA"));
+        gerarRelatorioCompleto();
+    }
+    
+    /**
+     * Gera relatório básico (sem decorators)
+     */
+    public void gerarRelatorioBasico() {
+        Relatorio relatorio = RelatorioFactory.criarBasico();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório completo com rentabilidade, risco e imposto
+     */
+    public void gerarRelatorioCompleto() {
+        Relatorio relatorio = RelatorioFactory.criarCompleto();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com rentabilidade
+     */
+    public void gerarRelatorioComRentabilidade() {
+        Relatorio relatorio = RelatorioFactory.criarComRentabilidade();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com risco
+     */
+    public void gerarRelatorioComRisco() {
+        Relatorio relatorio = RelatorioFactory.criarComRisco();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com imposto
+     */
+    public void gerarRelatorioComImposto() {
+        Relatorio relatorio = RelatorioFactory.criarComImposto();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com rentabilidade e risco
+     */
+    public void gerarRelatorioComRentabilidadeERisco() {
+        Relatorio relatorio = RelatorioFactory.criarComRentabilidadeERisco();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com rentabilidade e imposto
+     */
+    public void gerarRelatorioComRentabilidadeEImposto() {
+        Relatorio relatorio = RelatorioFactory.criarComRentabilidadeEImposto();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Gera relatório com risco e imposto
+     */
+    public void gerarRelatorioComRiscoEImposto() {
+        Relatorio relatorio = RelatorioFactory.criarComRiscoEImposto();
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
+    }
+    
+    /**
+     * Permite criar relatórios customizados combinando decorators
+     */
+    public void gerarRelatorioCustomizado(Relatorio relatorio) {
+        relatorio.gerar(usuarioLogado.getCarteiras().get(0));
     }
 
     // Métodos públicos para uso pelos Commands
