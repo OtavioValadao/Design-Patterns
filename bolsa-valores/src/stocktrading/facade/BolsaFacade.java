@@ -10,8 +10,9 @@ import stocktrading.model.Carteira;
 import stocktrading.model.Cotacao;
 import stocktrading.model.Ordem;
 import stocktrading.model.Usuario;
+import stocktrading.observer.EmailNotificacaoObserver;
+import stocktrading.observer.SmsNotificacaoObserver;
 import stocktrading.service.CotacaoService;
-import stocktrading.service.NotificacaoService;
 import stocktrading.service.OperacaoService;
 import stocktrading.singleton.ConfiguracaoSistema;
 import stocktrading.strategy.context.CalculoFactory;
@@ -28,20 +29,17 @@ public class BolsaFacade {
 
     private final CotacaoService cotacaoService;
     private final OperacaoService operacaoService;
-    private final NotificacaoService notificacaoService;
     private final CalculoFactory calculoFactory;
     private final ConfiguracaoSistema configuracaoSistema;
     private final Usuario usuarioLogado;
     private final List<Acao> acoesDisponiveis;
 
     public BolsaFacade() {
-        // Cria o adaptador apropriado baseado na configuração do sistema
         CotacaoCliente cotacaoCliente = CotacaoClienteFactory.criar(
             ConfiguracaoSistema.getInstance().getFonteDadosPadrao()
         );
         this.cotacaoService = new CotacaoService(cotacaoCliente);
         this.operacaoService = new OperacaoService();
-        this.notificacaoService = new NotificacaoService();
         this.calculoFactory = new CalculoFactory(List.of(
                 new ImpostoStrategy(),
                 new RentabilidadeStrategy(),
@@ -50,6 +48,33 @@ public class BolsaFacade {
         this.configuracaoSistema = ConfiguracaoSistema.getInstance();
         this.acoesDisponiveis = MockDadosUtil.criarAcoesIniciais();
         this.usuarioLogado = MockDadosUtil.criarUsuarioPadrao(acoesDisponiveis);
+        
+        configurarObservers();
+        registrarPrecosIniciais();
+    }
+    
+    private void configurarObservers() {
+        double limiteVariacao = 0.05;
+        
+        EmailNotificacaoObserver emailObserver = new EmailNotificacaoObserver(
+            List.of(usuarioLogado), 
+            limiteVariacao
+        );
+        cotacaoService.adicionarObserver(emailObserver);
+        
+        SmsNotificacaoObserver smsObserver = new SmsNotificacaoObserver(
+            List.of(usuarioLogado), 
+            limiteVariacao
+        );
+        cotacaoService.adicionarObserver(smsObserver);
+    }
+    
+    private void registrarPrecosIniciais() {
+        for (Acao acao : acoesDisponiveis) {
+            if (acao.getPrecoAtual() != null) {
+                cotacaoService.registrarPrecoInicial(acao.getCodigo(), acao.getPrecoAtual());
+            }
+        }
     }
 
 
@@ -84,18 +109,13 @@ public class BolsaFacade {
     }
 
     private void processarOrdem(Ordem ordem) {
-        // Busca cotação atual
         Cotacao cotacao = cotacaoService.buscarCotacaoAtual(ordem.getCodigoAcao(), configuracaoSistema.getFonteDadosPadrao());
         List<Cotacao> cotacoes = new ArrayList<>();
         cotacoes.add(cotacao);
 
-        // Define carteira padrão (primeira do usuário)
         Carteira carteira = usuarioLogado.getCarteiras().get(0);
-
-        // Executa operação via Chain of Responsibility
         operacaoService.executarOperacao(ordem, carteira, cotacoes, "COMPLETO");
 
-        // Verifica notificações
         Acao acaoEncontrada = null;
         for (Acao acao : acoesDisponiveis) {
             if (acao.getCodigo().equals(ordem.getCodigoAcao())) {
@@ -105,13 +125,11 @@ public class BolsaFacade {
         }
         
         if (acaoEncontrada != null) {
-            // Simula variação de preço para notificação
             double precoAnterior = acaoEncontrada.getPrecoAtual();
             double precoAtual = cotacao.getPreco();
-            // Atualiza preço na lista de ações disponíveis (mock)
-            acaoEncontrada.setPrecoAtual(precoAtual);
             
-            notificacaoService.notificarUsuariosPorPreco(List.of(usuarioLogado), acaoEncontrada, precoAnterior, precoAtual, 0.05); // 5% variação
+            acaoEncontrada.setPrecoAtual(precoAtual);
+            cotacaoService.notificarMudancaPreco(acaoEncontrada, precoAnterior, precoAtual);
         }
     }
 
